@@ -1,0 +1,42 @@
+<html lang="en">
+  <div class="d-flex justify-content-center align-items-center min-vh-100">
+    <form
+      [formGroup]="form"
+      class="w-50 p-4 bg-white border rounded"
+      (ngSubmit)="submitLogin()"
+    >
+      <h1 class="h3 mb-3 fw-normal text-center">Please sign in</h1>
+
+      <div class="form-floating mb-3">
+        <input
+          type="email"
+          class="form-control"
+          id="floatingInput"
+          placeholder="name@example.com"
+          formControlName="username"
+        />
+        <label for="floatingInput">Username</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          type="password"
+          class="form-control"
+          id="floatingPassword"
+          placeholder="Password"
+          formControlName="password"
+        />
+        <label for="floatingPassword">Password</label>
+      </div>
+
+      <div class="d-flex justify-content-center align-items-center my-3">
+        <button
+          class="btn btn-primary w-60 py-2"
+          type="submit"
+          [disabled]="form.invalid"
+        >
+          Sign in
+        </button>
+      </div>
+    </form>
+  </div>
+</html>

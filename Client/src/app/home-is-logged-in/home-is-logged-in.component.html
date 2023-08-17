@@ -1,0 +1,26 @@
+<div class="main">
+  <button (click)="getAllArtPieces()">Test</button>
+  <div class="cards">
+    <ng-container *ngIf="isLoading$ | async; else artPiecesTemplate">
+      <div>Loading...</div>
+    </ng-container>
+    <ng-template #artPiecesTemplate>
+      <article class="card" *ngFor="let artPiece of artPieces$ | async">
+        <img
+          class="card__background"
+          [src]="artPiece.photo"
+          [alt]="artPiece.description"
+          width="1920"
+          height="2193"
+        />
+        <div class="card__content | flow">
+          <div class="card__content--container | flow">
+            <h2 class="card__title">{{ artPiece.name }}</h2>
+            <p class="card__description">{{ artPiece.description }}</p>
+          </div>
+          <button class="card__button">Read more</button>
+        </div>
+      </article>
+    </ng-template>
+  </div>
+</div>
