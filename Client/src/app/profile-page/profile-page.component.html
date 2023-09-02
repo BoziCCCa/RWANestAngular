@@ -1,0 +1,108 @@
+<head>
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+    integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I"
+    crossorigin="anonymous"
+  />
+</head>
+<ng-container
+  *ngIf="isLoadingArt$ && isLoadingProfile$ | async; else profileTemplate"
+>
+  <div>Loading...</div>
+</ng-container>
+<ng-template #profileTemplate>
+  <ng-container *ngIf="user$ | async as user">
+    <div class="row" style="margin-top: 100px">
+      <div class="col-xl-4 col-md-6 col-sm-10" style="width: 100%">
+        <div class="bg-white shadow overflow-hidden">
+          <div class="px-4 pt-0 pb-4 bg-dark">
+            <div class="media align-items-end profile-header mb-5">
+              <div
+                class="profile mr-3"
+                style="display: flex; flex-direction: row"
+              >
+                <img
+                  src="{{ user.photo }}"
+                  alt="..."
+                  width="130"
+                  style="border-radius: 50%; height: 120px; width: 120px"
+                />
+
+                <div class="media-body text-white">
+                  <h4 class="mt-0 mb-0 px-2">
+                    {{ user.firstName }} {{ user.lastName }}
+                  </h4>
+                  <p class="small mb-4 px-2">
+                    <i class="mr-2"></i>{{ user.username }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="display: flex; justify-content: center; padding-top: 10px"
+          >
+            <button
+              type="button"
+              class="btn btn-labeled btn-primary"
+              (click)="ArtPiecesClick()"
+              style="margin: 5px"
+            >
+              Umetnicka dela
+            </button>
+            <button
+              type="button"
+              class="btn btn-labeled btn-primary"
+              (click)="ChallengesClick()"
+              style="margin: 5px"
+            >
+              Izazovi
+            </button>
+          </div>
+
+          <ng-container *ngIf="isArtPiecesClicked; else challenges">
+            <div class="py-4 px-4 min-vh-100">
+              <div class="row" *ngIf="artPieces$ | async as artPieces">
+                <div
+                  class="col-lg-3 mb-2 pr-lg-1"
+                  *ngFor="let artPiece of artPieces"
+                >
+                  <img
+                    [src]="artPiece.photo"
+                    alt="Art Piece"
+                    class="highlight-image rounded shadow-sm"
+                    style="width: 100%; height: 400px"
+                    routerLink="/single-art-piece/{{ artPiece.id }}"
+                  />
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #challenges>
+            <div class="py-4 px-4 min-vh-100">
+              <div class="row" *ngIf="challenges$ | async as challenges">
+                <div
+                  class="col-lg-3 mb-2 pr-lg-1"
+                  *ngFor="let challenge of challenges"
+                >
+                  <div class="challenge-container">
+                    <h2 style="display: flex; justify-content: center">
+                      {{ challenge.topic }}
+                    </h2>
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/rwaangular.appspot.com/o/images%2Fpencils2.jpg?alt=media&token=25828515-d3f2-47b7-9ccc-0606d5504777"
+                      alt="Challenge"
+                      class="highlight-image rounded shadow-sm"
+                      style="width: 100%; height: 400px"
+                      routerLink="/single-challenge/{{ challenge.id }}"
+                    />
+                  </div>
+                </div>
+              </div></div
+          ></ng-template>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</ng-template>

@@ -1,3 +1,4 @@
+import { getUserForProfile } from './../actions/user.actions';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as UserActions from '../actions/user.actions';
@@ -82,6 +83,46 @@ export class UserEffects {
         }
       }),
       catchError((error) => of(UserActions.rehydrateUserFailure({ error })))
+    )
+  );
+
+  getUserForProfile$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.getUserForProfile),
+      switchMap((action) =>
+        this.authService.getUserById(action.userId).pipe(
+          map((user) => UserActions.getUserForProfileSuccess({ user })),
+          catchError((error) =>
+            of(UserActions.getUserForProfileFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  updateUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.updateUser),
+      mergeMap(({ user }) =>
+        this.authService.updateUser(user).pipe(
+          map((updatedUser) =>
+            UserActions.updateUserSuccess({ user: updatedUser })
+          ),
+          catchError((error) => of(UserActions.updateUserFailure({ error })))
+        )
+      )
+    )
+  );
+
+  getAllUsers$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.getAllUsers),
+      switchMap(() =>
+        this.authService.getAllUSers().pipe(
+          map((users) => UserActions.getAllUsersSuccess({ users })),
+          catchError((error) => of(UserActions.getAllUsersFailure({ error })))
+        )
+      )
     )
   );
 

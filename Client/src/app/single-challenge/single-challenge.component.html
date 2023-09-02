@@ -1,0 +1,60 @@
+<div class="row" style="margin-top: 100px">
+  <div style="display: flex; justify-content: center; padding-top: 10px">
+    <button
+      (click)="onAddClick()"
+      type="button"
+      class="btn btn-labeled btn-success"
+    >
+      Dodaj
+    </button>
+  </div>
+
+  <ng-container *ngIf="isAddClicked; else notClicked">
+    <app-addchallengecomment
+      [myForm]="addForm"
+      (submitClick)="onAddSubmitClick()"
+    ></app-addchallengecomment>
+  </ng-container>
+
+  <ng-template #notClicked> </ng-template>
+  <div class="py-4 px-4 min-vh-100">
+    <div class="row" *ngIf="comments$ | async as comments">
+      <div
+        class="col-lg-3 pr-lg-1"
+        *ngFor="let comment of comments$ | async"
+        style="display: flex; flex-direction: column"
+      >
+        <figure
+          class="fir-image-figure"
+          style="display: flex; justify-content: center"
+        >
+          <div style="display: flex; flex-direction: row">
+            <img
+              class="fir-author-image fir-clickcircle"
+              src="{{ comment.user.photo }}"
+              alt="{{ comment.user.photo }}"
+              routerLink="profile-page/{{ comment.user.id }}"
+            />
+            <figcaption style="display: flex; flex-direction: column-reverse">
+              <a
+                class="fig-author-figure-title"
+                style="color: black"
+                routerLink="profile-page/{{ comment.user.id }}"
+              >
+                {{ comment.user.firstName }} {{ comment.user.lastName }} ({{
+                  comment.user.username
+                }})
+              </a>
+            </figcaption>
+          </div>
+        </figure>
+        <img
+          [src]="comment.photo"
+          [alt]="comment.photo"
+          class="highlight-image rounded shadow-sm"
+          style="width: 100%; height: 400px"
+        />
+      </div>
+    </div>
+  </div>
+</div>

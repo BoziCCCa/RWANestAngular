@@ -1,0 +1,281 @@
+/* Styles for the main container */
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Styles for the user profile section */
+.user-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.user-photo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.user-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Styles for the art piece section */
+.art-piece {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.art-piece__background {
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.art-piece__title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.art-piece__description {
+  font-size: 1rem;
+  color: #555;
+}
+
+.card {
+  border: none;
+  width: 100%;
+  box-shadow: 5px 6px 6px 2px white;
+  border-radius: 4px;
+}
+
+.dots {
+  height: 4px;
+  width: 4px;
+  margin-bottom: 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.badge {
+  padding: 7px;
+  padding-right: 9px;
+  padding-left: 16px;
+  box-shadow: 5px 6px 6px 2px white;
+}
+
+.user-img {
+  margin-top: 4px;
+  margin-right: 2px;
+  width: 40px;
+  height: 40px;
+}
+
+.check-icon {
+  font-size: 17px;
+  color: #c3bfbf;
+  top: 1px;
+  position: relative;
+  margin-left: 3px;
+}
+
+.form-check-input {
+  margin-top: 6px;
+  margin-left: -24px !important;
+  cursor: pointer;
+}
+
+.form-check-input:focus {
+  box-shadow: none;
+}
+
+.icons i {
+  margin-left: 8px;
+}
+.reply {
+  margin-left: 12px;
+}
+
+.reply small {
+  color: #b7b4b4;
+}
+
+.reply small:hover {
+  color: green;
+  cursor: pointer;
+}
+
+/* Style for the container */
+.art-piece-container {
+  width: 1000px;
+  height: 1000px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 5px;
+}
+
+/* Style for the user header */
+.user-header {
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  background-color: #eeeded;
+}
+
+.user-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.user-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Style for the art piece image */
+.art-piece {
+  text-align: center;
+}
+
+.art-piece-image {
+  max-width: 100%;
+}
+
+/* Style for the comments section */
+.comments {
+  margin-top: 20px;
+}
+
+.comments-heading {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.comment {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.comment-user-photo {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.comment-user-name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.comment-text {
+  font-size: 14px;
+}
+
+:root {
+  --fir-font-article: "adobe-garamond-pro", "Times New Roman", Times;
+  --fir-font-header: "foco", Helvetica;
+  --fir-blue-twitter-alpha: rgba(85, 172, 238, 0.6);
+  --fir-color-grey: rgba(0, 0, 0, 0.4);
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.fir-clickcircle {
+  height: 80px;
+  width: 80px;
+  border-radius: 100px;
+  cursor: pointer;
+}
+.fir-clickcircle-comment {
+  height: 40px;
+  width: 40px;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.fir-image-figure {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  position: relative;
+  text-decoration: none;
+}
+
+.fir-image-figure .caption,
+.fir-image-figure figcaption {
+  padding-left: 15px;
+}
+
+html.wf-active .fir-image-figure .fig-author-figure-title {
+  font-family: var(--fir-font-header);
+  font-size: 16px;
+}
+
+.fir-image-figure .fig-author-figure-title {
+  color: black;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+    Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  margin-top: 2px;
+}
+
+.fir-imageover {
+  position: relative;
+  display: flex;
+}
+
+.fir-imageover-color {
+  height: 80px;
+  width: 80px;
+  position: absolute;
+  background: var(--fir-blue-twitter-alpha);
+  background-image: none;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  animation: fadeInFadeOut 2s infinite;
+  top: 0;
+  left: 0;
+  margin: 3px;
+}
+
+.fir-imageover-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: fadeInFadeOut 2s infinite;
+}
+
+@keyframes fadeInFadeOut {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

@@ -18,7 +18,9 @@ export class AppComponent implements OnInit {
     // Check local storage for user data
     const userData = localStorage.getItem('loggedUser');
     if (userData) {
-      this.store.dispatch(UserActions.rehydrateUser({message: JSON.stringify(userData)}));
+      this.store.dispatch(
+        UserActions.rehydrateUser({ message: JSON.stringify(userData) })
+      );
     }
   }
 }

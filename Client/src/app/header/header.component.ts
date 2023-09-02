@@ -8,6 +8,7 @@ import {
   selectLoggedIn,
 } from '../store/selectors/user.selectors';
 import { UserState } from '../store/types/user.interface';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -16,18 +17,38 @@ import { UserState } from '../store/types/user.interface';
 })
 export class HeaderComponent implements OnInit {
   isLoggedIn$: Observable<boolean>;
-  
+  isHomePage: Boolean = false;
+  currentRoute: string = '';
+  isDropdownVisible: boolean = false;
+  userId!: number;
+
   constructor(
     public authService: AuthService,
-    private store: Store<UserState>
+    private store: Store<UserState>,
+    private router: Router
   ) {
     this.isLoggedIn$ = this.store.select(selectIsLoggedIn);
-    console.log(this.isLoggedIn$);
+    console.log('logged', this.isLoggedIn$);
   }
 
   logout() {
     this.store.dispatch(userActions.logout());
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd && this.isLoggedIn$) {
+        const user = localStorage.getItem('loggedUser');
+        if (user) {
+          const userr = JSON.parse(user!);
+          this.userId = userr.id;
+        }
+        this.currentRoute = event.url;
+      }
+    });
+  }
+
+  toggleDropdown() {
+    this.isDropdownVisible = !this.isDropdownVisible;
+  }
 }

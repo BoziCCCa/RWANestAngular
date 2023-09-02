@@ -1,0 +1,49 @@
+/*
+*
+* ==========================================
+* CUSTOM UTIL CLASSES
+* ==========================================
+*
+*/
+.profile-header {
+  transform: translateY(2rem);
+}
+
+/*
+  *
+  * ==========================================
+  * FOR DEMO PURPOSE
+  * ==========================================
+  *
+  */
+body {
+  background: #654ea3;
+  background: -webkit-linear-gradient(to right, #654ea3, #eaafc8);
+  background: linear-gradient(to right, #654ea3, #eaafc8);
+  min-height: 100vh;
+}
+
+.highlight-image {
+  transition: opacity 0.3s; /* Add a smooth transition effect */
+}
+
+/* Change opacity on hover to highlight the image */
+.highlight-image:hover {
+  opacity: 0.8; /* Adjust the opacity as desired */
+}
+
+.challenge-container {
+  position: relative;
+}
+
+.delete-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  cursor: pointer;
+  display: none;
+}
+
+.challenge-container:hover .delete-icon {
+  display: block;
+}

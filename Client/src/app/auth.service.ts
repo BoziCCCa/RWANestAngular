@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { User, UserModel } from './store/types/user';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,7 @@ export class AuthService {
   ) {}
 
   login(credentials: any): Observable<string> {
-    return this.http.post<string>( 
+    return this.http.post<string>(
       'http://localhost:3000/user/login',
       credentials,
       {
@@ -68,5 +69,39 @@ export class AuthService {
         withCredentials: true,
       }
     );
+  }
+
+  getUserById(id: number): Observable<UserModel> {
+    console.log('aaaaaaaaa', id);
+    return this.http.get<UserModel>(
+      `http://localhost:3000/user/getUser/${id}`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
+  updateUser(user: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    username: string;
+    photo: string;
+    dateOfBirth: Date;
+  }): Observable<UserModel> {
+    return this.http.put<UserModel>(
+      `http://localhost:3000/user/updateUser`,
+      user,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
+  getAllUSers():Observable<UserModel[]>{
+    return this.http.get<UserModel[]>(`http://localhost:3000/user/getUsers`, {
+      withCredentials: true,
+    })
   }
 }

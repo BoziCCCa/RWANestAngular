@@ -1268,3 +1268,22 @@ h6 {
 .footer .credits a {
   color: var(--color-primary);
 }
+
+.mobile-nav {
+  display: none;
+  position: absolute;
+  top: 100%; /* Position it below the header */
+  left: 0;
+  background-color: #fff; /* Background color for the dropdown */
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2); /* Add a shadow for the dropdown */
+}
+
+/* Styles for the dropdown links */
+.mobile-nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.mobile-nav li {
+  margin: 10px 0;
+}

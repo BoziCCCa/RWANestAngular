@@ -1,10 +1,12 @@
+import { UserModel } from './user';
+
 export interface ArtPiece {
   id: number;
   photo: string;
   description: string;
   name: string;
   createdAt: Date;
-  userId: number;
+  user: UserModel;
 }
 
 export class ArtPieceModel implements ArtPiece {
@@ -13,7 +15,7 @@ export class ArtPieceModel implements ArtPiece {
   description: string;
   name: string;
   createdAt: Date;
-  userId: number;
+  user: UserModel;
 
   constructor(
     id: number,
@@ -21,13 +23,13 @@ export class ArtPieceModel implements ArtPiece {
     description: string,
     name: string,
     createdAt: Date,
-    userId: number
+    user: UserModel
   ) {
     this.id = id;
     this.photo = photo;
     this.description = description;
     this.name = name;
     this.createdAt = createdAt;
-    this.userId = userId;
+    this.user = user;
   }
 }

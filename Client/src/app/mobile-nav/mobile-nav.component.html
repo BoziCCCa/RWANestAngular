@@ -1,0 +1,18 @@
+<div class="mobile-nav" [class.active]="isDropdownVisible">
+  <ul *ngIf="authService.isLoggedIn(); else notLogedIn">
+    <li><a routerLink="/" (click)="closeDropdown()">Umetnicka dela</a></li>
+    <li><a routerLink="/challenges" (click)="closeDropdown()">Izazovi</a></li>
+    <li>
+      <a [routerLink]="'/profile-page/' + userId" (click)="closeDropdown()"
+        >Profil</a
+      >
+    </li>
+    <li><a (click)="logout()" (click)="closeDropdown()">Log out</a></li>
+  </ul>
+  <ng-template #notLogedIn>
+    <ul>
+      <li><a routerLink="/login" (click)="closeDropdown()">Login</a></li>
+      <li><a routerLink="/register" (click)="closeDropdown()">Register</a></li>
+    </ul>
+  </ng-template>
+</div>

@@ -1,5 +1,4 @@
 <div class="main">
-  <button (click)="getAllArtPieces()">Test</button>
   <div class="cards">
     <ng-container *ngIf="isLoading$ | async; else artPiecesTemplate">
       <div>Loading...</div>
@@ -10,15 +9,35 @@
           class="card__background"
           [src]="artPiece.photo"
           [alt]="artPiece.description"
-          width="1920"
-          height="2193"
         />
-        <div class="card__content | flow">
+        <div class="card__content | flow" style="width: 100%">
           <div class="card__content--container | flow">
-            <h2 class="card__title">{{ artPiece.name }}</h2>
-            <p class="card__description">{{ artPiece.description }}</p>
+            <figure class="fir-image-figure">
+              <img
+                class="fir-author-image fir-clickcircle"
+                src="{{ artPiece.user.photo }}"
+                alt="{{ artPiece.user.photo }}"
+                routerLink="profile-page/{{ artPiece.user.id }}"
+              />
+              <figcaption>
+                <a
+                  class="fig-author-figure-title"
+                  style="color: white"
+                  routerLink="profile-page/{{ artPiece.user.id }}"
+                >
+                  {{ artPiece.user.firstName }} {{ artPiece.user.lastName }} ({{
+                    artPiece.user.username
+                  }})
+                </a>
+              </figcaption>
+            </figure>
           </div>
-          <button class="card__button">Read more</button>
+          <button
+            class="card__button"
+            [routerLink]="['/single-art-piece', artPiece.id]"
+          >
+            Read more
+          </button>
         </div>
       </article>
     </ng-template>

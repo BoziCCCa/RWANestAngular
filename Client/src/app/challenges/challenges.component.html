@@ -1,0 +1,48 @@
+<div class="main">
+  <div class="cards">
+    <ng-container *ngIf="isLoading$ | async; else artPiecesTemplate">
+      <div>Loading...</div>
+    </ng-container>
+    <ng-template #artPiecesTemplate>
+      <article class="card" *ngFor="let artPiece of challenges$ | async">
+        <img
+          class="card__background"
+          src="https://firebasestorage.googleapis.com/v0/b/rwaangular.appspot.com/o/images%2Fpencils2.jpg?alt=media&token=25828515-d3f2-47b7-9ccc-0606d5504777"
+          [alt]=""
+          width="1920"
+          height="2193"
+        />
+        <div class="card__content | flow" style="width: 100%">
+          <div class="card__content--container | flow">
+            <figure class="fir-image-figure">
+              <img
+                class="fir-author-image fir-clickcircle"
+                src="{{ artPiece.user.photo }}"
+                alt="{{ artPiece.user.photo }}"
+                [routerLink]="['/profile-page', artPiece.user.id]"
+              />
+              <figcaption>
+                <a
+                  class="fig-author-figure-title"
+                  style="color: white"
+                  [routerLink]="['/profile-page', artPiece.user.id]"
+                >
+                  {{ artPiece.user.firstName }}
+                  {{ artPiece.user.lastName }} ({{ artPiece.user.username }})
+                </a>
+              </figcaption>
+            </figure>
+
+            <h2 style="text-align: center">{{ artPiece.topic }}</h2>
+          </div>
+          <button
+            class="card__button"
+            [routerLink]="['/single-challenge', artPiece.id]"
+          >
+            Postavi rad
+          </button>
+        </div>
+      </article>
+    </ng-template>
+  </div>
+</div>
