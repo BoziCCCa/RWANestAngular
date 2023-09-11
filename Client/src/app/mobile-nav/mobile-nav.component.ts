@@ -21,14 +21,11 @@ export class MobileNavComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const user = localStorage.getItem('loggedUser');
-    if (user) {
-      const userr = JSON.parse(user!);
-      this.userId = userr.id;
-    }
+    var user = this.authService.getWithExpiry('loggedUser');
+    if (user) this.userId = user.id;
   }
-  closeDropdown(){
-    this.isDropdownVisible=false;
+  closeDropdown() {
+    this.isDropdownVisible = false;
   }
   logout() {
     this.isDropdownVisible = false;

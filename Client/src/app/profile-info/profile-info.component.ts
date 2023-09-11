@@ -6,8 +6,12 @@ import { getUserForProfile, updateUser } from '../store/actions/user.actions';
 import { selectUserProfile } from '../store/selectors/user.selectors';
 import { UserModel } from '../store/types/user';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
+import {
+  AngularFireStorage,
+  AngularFireStorageModule,
+} from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-profile-info',
@@ -15,7 +19,7 @@ import { finalize } from 'rxjs';
   styleUrls: ['./profile-info.component.css'],
 })
 export class ProfileInfoComponent implements OnInit {
-  userId: number;
+  userId!: number;
   user$!: UserModel | null;
   myForm: FormGroup;
   isDisabled: boolean = true;
@@ -23,11 +27,11 @@ export class ProfileInfoComponent implements OnInit {
   constructor(
     private store: Store<UserProfileState>,
     private formBuilder: FormBuilder,
-    private fireStorage: AngularFireStorage
+    private fireStorage: AngularFireStorage,
+    private authService: AuthService
   ) {
-    const userString = localStorage.getItem('loggedUser');
-    if (userString !== null) var user = JSON.parse(userString);
-    this.userId = user.id;
+    var user = this.authService.getWithExpiry('loggedUser');
+    if (user) this.userId = user.id;
 
     this.myForm = this.formBuilder.group({
       username: [{ value: '', disabled: true }, Validators.required],
@@ -56,7 +60,6 @@ export class ProfileInfoComponent implements OnInit {
       const dateOfBirthDateOnly = new Date(this.user$.dateOfBirth)
         .toISOString()
         .split('T')[0];
-      console.log(this.user$);
       this.myForm.patchValue({
         username: this.user$.username,
         firstName: this.user$.firstName,
@@ -77,7 +80,7 @@ export class ProfileInfoComponent implements OnInit {
   }
   enableAllControls() {
     Object.keys(this.myForm.controls).forEach((controlName) => {
-      this.myForm.get(controlName)?.enable();
+      if (controlName !== 'username') this.myForm.get(controlName)?.enable();
     });
     this.updateFormValues();
   }
@@ -92,7 +95,6 @@ export class ProfileInfoComponent implements OnInit {
   handleSubmit() {
     if (this.myForm.valid) {
       if (this.myForm.value.photo != '') {
-        console.log('TEST', this.myForm.value.photo.name);
         const filePath = `profile-images/${Date.now()}_${
           this.myForm.value.photo.name
         }`;
@@ -103,7 +105,6 @@ export class ProfileInfoComponent implements OnInit {
           .pipe(
             finalize(async () => {
               const downloadURL = await fileRef.getDownloadURL().toPromise();
-              console.log(downloadURL);
               this.store.dispatch(
                 updateUser({
                   user: {
@@ -121,17 +122,6 @@ export class ProfileInfoComponent implements OnInit {
           )
           .subscribe();
       } else {
-        console.log({
-          user: {
-            id: this.userId,
-            firstName: this.myForm.value.firstName,
-            lastName: this.myForm.value.lastName,
-            email: this.myForm.value.email,
-            username: this.myForm.value.username,
-            photo: '',
-            dateOfBirth: this.myForm.value.dateOfBirth,
-          },
-        });
         this.store.dispatch(
           updateUser({
             user: {
@@ -151,8 +141,5 @@ export class ProfileInfoComponent implements OnInit {
 
   handleFileChange(event: any) {
     this.myForm.value.photo = event.target.files[0];
-    if (this.myForm.value.photo) {
-      console.log(this.myForm.value);
-    }
   }
 }

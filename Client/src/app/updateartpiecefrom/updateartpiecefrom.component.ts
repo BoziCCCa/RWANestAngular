@@ -13,13 +13,9 @@ export class UpdateartpiecefromComponent implements OnInit {
   editSubmitClick() {
     this.submitClick.emit();
   }
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   handleFileChange(event: any) {
     this.myForm.value.photo = event.target.files[0];
-    if (this.myForm.value.photo) {
-      console.log(this.myForm.value);
-    }
   }
 }

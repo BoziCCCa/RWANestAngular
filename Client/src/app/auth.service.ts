@@ -27,7 +27,6 @@ export class AuthService {
   }
 
   async register(info: any) {
-    console.log(info);
     const filePath = `profile_images/${Date.now()}_${info.photo.name}`;
     const fileRef = this.storage.ref(filePath);
     const task = this.storage.upload(filePath, info.photo);
@@ -42,7 +41,7 @@ export class AuthService {
               this.router.navigate(['/login']);
             },
             (error) => {
-              console.log('error: ' + error);
+              alert('error: ' + error);
             }
           );
         })
@@ -72,7 +71,6 @@ export class AuthService {
   }
 
   getUserById(id: number): Observable<UserModel> {
-    console.log('aaaaaaaaa', id);
     return this.http.get<UserModel>(
       `http://localhost:3000/user/getUser/${id}`,
       {
@@ -99,9 +97,26 @@ export class AuthService {
     );
   }
 
-  getAllUSers():Observable<UserModel[]>{
-    return this.http.get<UserModel[]>(`http://localhost:3000/user/getUsers`, {
-      withCredentials: true,
-    })
+  getAllUSersBySearch(search: string): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(
+      `http://localhost:3000/user/getAllUsersBySearch/${search}`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
+  getWithExpiry(key: string) {
+    const itemStr = localStorage.getItem(key);
+    if (!itemStr) {
+      return null;
+    }
+    const item = JSON.parse(itemStr);
+    const now = new Date();
+    if (now.getTime() > item.expDate) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    return item.value;
   }
 }

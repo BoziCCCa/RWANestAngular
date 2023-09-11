@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { addArtPiece } from '../store/actions/art-piece.actions';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-add-art-piece',
@@ -23,7 +24,8 @@ export class AddArtPieceComponent implements OnInit {
     private popupService: PopupService,
     private formBuilder: FormBuilder,
     private store: Store<ArtPiecesUserState>,
-    private fireStorage: AngularFireStorage
+    private fireStorage: AngularFireStorage,
+    private authService: AuthService
   ) {
     this.myForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -45,10 +47,9 @@ export class AddArtPieceComponent implements OnInit {
   submitForm() {
     if (this.myForm.valid) {
       const info = this.myForm.value;
-      const userString = localStorage.getItem('loggedUser');
-      if (userString !== null) var user = JSON.parse(userString);
-      const userIdd: number = user.id;
-      console.log('id', userIdd);
+      var user = this.authService.getWithExpiry('loggedUser');
+      if(user)
+      var userIdd: number = user.id;
 
       const filePath = `darwings/${Date.now()}_${info.photo.name}`;
       const fileRef = this.fireStorage.ref(filePath);
@@ -58,12 +59,7 @@ export class AddArtPieceComponent implements OnInit {
         .pipe(
           finalize(async () => {
             const downloadURL = await fileRef.getDownloadURL().toPromise();
-            console.log('aaa', {
-              name: info.name,
-              description: info.description,
-              photo: downloadURL,
-              userId: userIdd,
-            });
+
             this.closePopup();
 
             this.store.dispatch(
@@ -84,9 +80,6 @@ export class AddArtPieceComponent implements OnInit {
 
   handleFileChange(event: any) {
     this.myForm.value.photo = event.target.files[0];
-    if (this.myForm.value.photo) {
-      console.log(this.myForm.value);
-    }
   }
   ngOnInit(): void {}
 }

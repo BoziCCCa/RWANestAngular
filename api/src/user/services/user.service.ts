@@ -76,11 +76,18 @@ export class UserService {
       username: data.username,
     });
     if (user) {
-      console.log(data.id);
-      console.log(user);
       const { password, ...result } = user;
       return result;
     }
     return undefined;
+  }
+
+  async findAllUsersBySearch(searchInput: string) {
+    const users = await this.UserRepository.find();
+
+    const searchLowerCase = searchInput.toLowerCase();
+    return users.filter((user) =>
+      user.username.toLowerCase().includes(searchLowerCase),
+    );
   }
 }

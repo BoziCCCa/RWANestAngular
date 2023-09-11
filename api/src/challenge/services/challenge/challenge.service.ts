@@ -21,7 +21,6 @@ export class ChallengeService {
     challenge.topic = challengeDto.topic;
 
     const user = await this.userService.getUser(challengeDto.userId);
-    console.log(user);
     challenge.user = user;
 
     return await this.ChallengeRepository.save(challenge);

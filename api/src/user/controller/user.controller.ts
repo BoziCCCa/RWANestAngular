@@ -81,4 +81,10 @@ export class UserController {
     const userbaza = await this.userService.getLoggedUser(data);
     return userbaza;
   }
+
+  @Get('getAllUsersBySearch/:searchInput')
+  @UseGuards(UserGuard)
+  findUsersByUsername(@Param('searchInput') searchInput: string) {
+    return this.userService.findAllUsersBySearch(searchInput);
+  }
 }

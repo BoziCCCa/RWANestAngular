@@ -14,6 +14,7 @@ import {
   getCommentsForChallenge,
 } from '../store/actions/challenge-comment.actions';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-single-challenge',
@@ -31,7 +32,8 @@ export class SingleChallengeComponent implements OnInit {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private cStore: Store<ChallengeCommentState>,
-    private fireStorage: AngularFireStorage
+    private fireStorage: AngularFireStorage,
+    private authService:AuthService
   ) {
     this.isAddClicked = false;
     this.addForm = this.formBuilder.group({
@@ -44,8 +46,8 @@ export class SingleChallengeComponent implements OnInit {
     this.comments$ = this.cStore.select(selectChallengeComments);
 
     this.route.params.subscribe((params) => {
-      const userString = localStorage.getItem('loggedUser');
-      if (userString !== null) this.user = JSON.parse(userString);
+      var user = this.authService.getWithExpiry('loggedUser');
+      this.user = user;
       this.id = params['id'];
     });
   }

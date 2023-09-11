@@ -30,6 +30,7 @@ import {
   getChallengesForUser,
 } from '../store/actions/challenge.actions';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../auth.service';
 @Component({
   selector: 'app-own-profile-page',
   templateUrl: './own-profile-page.component.html',
@@ -56,7 +57,8 @@ export class OwnProfilePageComponent implements OnInit {
     private cStore: Store<ChallengesUserState>,
     private router: Router,
     private popupService: PopupService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService
   ) {
     this.artPieces$ = this.store.select(selectArtPiecesUser);
     this.isLoadingArt$ = this.store.select(selectArtPiecesUserLoading);
@@ -75,17 +77,15 @@ export class OwnProfilePageComponent implements OnInit {
     this.route.params.subscribe((params) => {
       const id = params['id'];
 
-      const userString = localStorage.getItem('loggedUser');
-      if (userString !== null) var user = JSON.parse(userString);
-      const userId: number = user.id;
-      if (userId != id) this.router.navigate([`/profile-page/${id}`]);
+      var user = this.authService.getWithExpiry('loggedUser');
+      if (user) {
+        const userId: number = user.id;
+        if (userId != id) this.router.navigate([`/profile-page/${id}`]);
 
-      this.store.dispatch(getArtPiecesForUser({ id: id }));
-      this.uStore.dispatch(getUserForProfile({ userId: id }));
-      this.cStore.dispatch(getChallengesForUser({ id: id }));
-      this.artPieces$.subscribe((a) => {
-        console.log(a);
-      });
+        this.store.dispatch(getArtPiecesForUser({ id: id }));
+        this.uStore.dispatch(getUserForProfile({ userId: id }));
+        this.cStore.dispatch(getChallengesForUser({ id: id }));
+      }
     });
 
     this.popupService.popupState$.subscribe((isOpen) => {

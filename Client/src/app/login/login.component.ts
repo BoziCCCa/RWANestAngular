@@ -30,7 +30,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  
   submitLogin() {
     if (this.form.valid) {
       this.store.dispatch(

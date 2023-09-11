@@ -40,8 +40,5 @@ export class RegisterComponent {
   }
   handleFileChange(event: any) {
     this.form.value.photo = event.target.files[0];
-    if (this.form.value.photo) {
-      console.log(this.form.value);
-    }
   }
 }

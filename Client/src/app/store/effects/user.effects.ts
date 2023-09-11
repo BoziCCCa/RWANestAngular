@@ -2,17 +2,17 @@ import { getUserForProfile } from './../actions/user.actions';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as UserActions from '../actions/user.actions';
-import { switchMap, tap } from 'rxjs';
+import { EMPTY, Observable, filter, switchMap, tap } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { Injectable } from '@angular/core';
 import { catchError, map, mergeMap, of } from 'rxjs';
+import { UserModel } from '../types/user';
 
 @Injectable()
 export class UserEffects {
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.logInUser),
-      tap((action) => console.log('Action dispatched:', action)),
       switchMap((action) =>
         this.authService.login(action.user).pipe(
           map((response) =>
@@ -30,12 +30,17 @@ export class UserEffects {
       this.actions$.pipe(
         ofType(UserActions.logInUserSuccess),
         tap(() => {
-          if (!localStorage.getItem('loggedUser')) {
+          if (!this.authService.getWithExpiry('loggedUser')) {
             this.authService.getLoggedUser().subscribe((response) => {
-              localStorage.setItem('loggedUser', JSON.stringify(response));
+              localStorage.setItem(
+                'loggedUser',
+                JSON.stringify({
+                  value: response,
+                  expDate: new Date().getTime() + 3600 * 1000,
+                })
+              );
             });
             this.router.navigate(['']);
-            console.log('a');
           }
         })
       ),
@@ -62,7 +67,6 @@ export class UserEffects {
           if (localStorage.getItem('loggedUser')) {
             localStorage.removeItem('loggedUser');
             this.router.navigate(['/login']);
-            console.log('a');
           }
         })
       ),
@@ -73,7 +77,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(UserActions.rehydrateUser),
       map(() => {
-        const userData = localStorage.getItem('loggedUser');
+        const userData = this.authService.getWithExpiry('loggedUser');
 
         if (userData) {
           const user = JSON.parse(userData);
@@ -114,15 +118,23 @@ export class UserEffects {
     )
   );
 
-  getAllUsers$ = createEffect(() =>
+  getAllUsersBySearch$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserActions.getAllUsers),
-      switchMap(() =>
-        this.authService.getAllUSers().pipe(
-          map((users) => UserActions.getAllUsersSuccess({ users })),
-          catchError((error) => of(UserActions.getAllUsersFailure({ error })))
-        )
-      )
+      ofType(UserActions.getAllUsersBySearch),
+      switchMap((action) => {
+        const search = action.search;
+
+        if (!search || search.trim() === '') {
+          return of(UserActions.getAllUsersBySearchSuccess({ users: [] }));
+        }
+
+        return this.authService.getAllUSersBySearch(search).pipe(
+          map((users) => UserActions.getAllUsersBySearchSuccess({ users })),
+          catchError((error) =>
+            of(UserActions.getAllUsersBySearchFailure({ error }))
+          )
+        );
+      })
     )
   );
 

@@ -1,5 +1,5 @@
 <div class="mobile-nav" [class.active]="isDropdownVisible">
-  <ul *ngIf="authService.isLoggedIn(); else notLogedIn">
+  <ul *ngIf="authService.isLoggedIn(); else notLoggedIn">
     <li><a routerLink="/" (click)="closeDropdown()">Umetnicka dela</a></li>
     <li><a routerLink="/challenges" (click)="closeDropdown()">Izazovi</a></li>
     <li>
@@ -9,7 +9,7 @@
     </li>
     <li><a (click)="logout()" (click)="closeDropdown()">Log out</a></li>
   </ul>
-  <ng-template #notLogedIn>
+  <ng-template #notLoggedIn>
     <ul>
       <li><a routerLink="/login" (click)="closeDropdown()">Login</a></li>
       <li><a routerLink="/register" (click)="closeDropdown()">Register</a></li>

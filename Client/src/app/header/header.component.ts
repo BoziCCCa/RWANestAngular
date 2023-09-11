@@ -16,7 +16,6 @@ import { NavigationEnd, Router } from '@angular/router';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  isLoggedIn$: Observable<boolean>;
   isHomePage: Boolean = false;
   currentRoute: string = '';
   isDropdownVisible: boolean = false;
@@ -26,10 +25,7 @@ export class HeaderComponent implements OnInit {
     public authService: AuthService,
     private store: Store<UserState>,
     private router: Router
-  ) {
-    this.isLoggedIn$ = this.store.select(selectIsLoggedIn);
-    console.log('logged', this.isLoggedIn$);
-  }
+  ) {}
 
   logout() {
     this.store.dispatch(userActions.logout());
@@ -37,13 +33,12 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd && this.isLoggedIn$) {
-        const user = localStorage.getItem('loggedUser');
+      if (event instanceof NavigationEnd && this.authService.isLoggedIn()) {
+        var user = this.authService.getWithExpiry('loggedUser');
         if (user) {
-          const userr = JSON.parse(user!);
-          this.userId = userr.id;
+          this.userId = user.id;
+          this.currentRoute = event.url;
         }
-        this.currentRoute = event.url;
       }
     });
   }

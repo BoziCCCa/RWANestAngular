@@ -84,3 +84,18 @@ export const getAllUsersFailure = createAction(
   '[User] Get All Users Failure',
   props<{ error: string }>()
 );
+
+export const getAllUsersBySearch = createAction(
+  '[User] Get All Users By Search',
+  props<{ search: string }>()
+);
+
+export const getAllUsersBySearchSuccess = createAction(
+  '[User] Get All Users By Search Success',
+  props<{ users: UserModel[] }>()
+);
+
+export const getAllUsersBySearchFailure = createAction(
+  '[User] Get All Users By Search Failure',
+  props<{ error: string }>()
+);

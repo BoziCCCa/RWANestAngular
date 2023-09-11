@@ -82,14 +82,14 @@ export const profileReducers = createReducer(
 
 export const allUsersReducer = createReducer(
   initialStateAllUsers,
-  on(userActions.getAllUsers, (state) => ({
+  on(userActions.getAllUsersBySearch, (state) => ({
     ...state,
     isLoading: true,
   })),
-  on(userActions.getAllUsersSuccess, (state, action) => {
+  on(userActions.getAllUsersBySearchSuccess, (state, action) => {
     return adapter.setAll(action.users, { ...state, isLoading: false });
   }),
-  on(userActions.getAllUsersFailure, (state) => ({
+  on(userActions.getAllUsersBySearchFailure, (state) => ({
     ...state,
     isLoading: false,
   }))

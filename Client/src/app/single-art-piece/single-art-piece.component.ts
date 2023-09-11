@@ -34,6 +34,7 @@ import { CommentModel } from '../store/types/comment';
 import { calculateTimeAgo } from '../store/types/comment';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-single-art-piece',
@@ -57,7 +58,8 @@ export class SingleArtPieceComponent implements OnInit {
     private cStore: Store<CommentState>,
     private formBuilder: FormBuilder,
     private fireStorage: AngularFireStorage,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.artPiece$ = this.store.select(selectSingleArtPiece);
     this.isLoading$ = this.store.select(selectSingleArtPieceLoading);
@@ -74,8 +76,8 @@ export class SingleArtPieceComponent implements OnInit {
     });
 
     this.route.params.subscribe((params) => {
-      const userString = localStorage.getItem('loggedUser');
-      if (userString !== null) this.user = JSON.parse(userString);
+      var user = this.authService.getWithExpiry('loggedUser');
+      this.user = user;
       this.id = params['id'];
     });
   }
@@ -88,7 +90,6 @@ export class SingleArtPieceComponent implements OnInit {
 
       this.artPiece$.subscribe((artPiece) => {
         if (artPiece) {
-          console.log('haha', artPiece.user.id);
           this.userId = artPiece.user.id;
           this.updateForm.patchValue({
             name: artPiece.name,
@@ -113,7 +114,6 @@ export class SingleArtPieceComponent implements OnInit {
   onSubmit() {
     if (this.myForm.valid) {
       const formData: string = this.myForm.value.description;
-      console.log('a', formData);
 
       this.cStore.dispatch(
         addComment({
@@ -159,13 +159,7 @@ export class SingleArtPieceComponent implements OnInit {
           .pipe(
             finalize(async () => {
               const downloadURL = await fileRef.getDownloadURL().toPromise();
-              console.log('aaa', {
-                id: this.id,
-                name: this.updateForm.value.name,
-                description: this.updateForm.value.description,
-                photo: downloadURL,
-              });
-              console.log(downloadURL);
+
               this.store.dispatch(
                 updateArtPiece({
                   artPiece: {

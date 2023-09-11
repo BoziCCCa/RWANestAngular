@@ -10,6 +10,9 @@ body {
 }
 .box {
   position: relative;
+  width: 100%; /* Adjust the width to fit your layout */
+  max-width: 400px; /* Adjust the maximum width as needed */
+  margin: 0 auto; /* Center the box horizontally */
 }
 
 .input {
@@ -85,4 +88,25 @@ img.w-6.h-6 {
   height: 1.5rem;
   margin-right: 0.5rem;
   border-radius: 50%;
+}
+
+/* Use a media query to change the style for smaller screens */
+@media (max-width: 768px) {
+  /* Adjust the screen width breakpoint as needed */
+  .box input {
+    width: 100px;
+  }
+
+  /* Adjust the styles for the dropdown menu as needed */
+  #dropdownUsers {
+    max-height: 200px;
+    right: 50px; /* Adjust the maximum height for the dropdown menu */
+  }
+
+  /* You can also adjust the styles for the input and other elements as needed */
+  .input {
+    width: 100%; /* Make the input element width 100% for smaller screens */
+  }
+
+  /* Add any other necessary adjustments for smaller screens */
 }

@@ -1272,13 +1272,12 @@ h6 {
 .mobile-nav {
   display: none;
   position: absolute;
-  top: 100%; /* Position it below the header */
+  top: 100%;
   left: 0;
-  background-color: #fff; /* Background color for the dropdown */
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2); /* Add a shadow for the dropdown */
+  background-color: #fff;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
 
-/* Styles for the dropdown links */
 .mobile-nav ul {
   list-style: none;
   padding: 0;
@@ -1287,3 +1286,5 @@ h6 {
 .mobile-nav li {
   margin: 10px 0;
 }
+
+

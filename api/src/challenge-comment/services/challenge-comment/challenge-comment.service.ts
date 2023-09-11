@@ -26,7 +26,6 @@ export class ChallengeCommentService {
     const challenge = await this.ChallengeService.getChallengeById(
       challengeCommentDto.challengeId,
     );
-    console.log(user, challenge);
     comment.user = user;
     comment.challenge = challenge;
 
@@ -34,7 +33,6 @@ export class ChallengeCommentService {
   }
 
   async getChallengeCommentsForChallenge(id: number) {
-    console.log('id', id);
     return await this.CommentRepository.createQueryBuilder('challengeComment')
       .where('challengeComment.challengeId = :id', { id })
       .leftJoinAndSelect('challengeComment.user', 'user')

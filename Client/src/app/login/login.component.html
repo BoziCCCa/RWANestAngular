@@ -5,7 +5,7 @@
       class="w-50 p-4 bg-white border rounded"
       (ngSubmit)="submitLogin()"
     >
-      <h1 class="h3 mb-3 fw-normal text-center">Please sign in</h1>
+      <h1 class="h3 mb-3 fw-normal text-center">Login</h1>
 
       <div class="form-floating mb-3">
         <input
@@ -30,8 +30,9 @@
 
       <div class="d-flex justify-content-center align-items-center my-3">
         <button
-          class="btn btn-primary w-60 py-2"
+          class="btn w-60 py-2"
           type="submit"
+          style="background-color: #5844a0; color: #fff"
           [disabled]="form.invalid"
         >
           Sign in

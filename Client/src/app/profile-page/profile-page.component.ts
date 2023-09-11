@@ -24,6 +24,7 @@ import {
   selectChallengesUser,
   selectChallengesUserLoading,
 } from '../store/selectors/challenge.selectors';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -48,7 +49,8 @@ export class ProfilePageComponent implements OnInit {
     private store: Store<ArtPiecesUserState>,
     private uStore: Store<UserProfileState>,
     private cStore: Store<ChallengesUserState>,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.artPieces$ = this.store.select(selectArtPiecesUser);
     this.isLoadingArt$ = this.store.select(selectArtPiecesUserLoading);
@@ -64,17 +66,15 @@ export class ProfilePageComponent implements OnInit {
     this.route.params.subscribe((params) => {
       const id = params['id'];
 
-      const userString = localStorage.getItem('loggedUser');
-      if (userString !== null) var user = JSON.parse(userString);
-      const userId: number = user.id;
-      if (userId == id) this.router.navigate([`/my-profile-page/${id}`]);
+      var user = this.authService.getWithExpiry('loggedUser');
+      if (user) {
+        const userId = user.id;
+        if (userId == id) this.router.navigate([`/my-profile-page/${id}`]);
 
-      this.store.dispatch(getArtPiecesForUser({ id: id }));
-      this.uStore.dispatch(getUserForProfile({ userId: id }));
-      this.cStore.dispatch(getChallengesForUser({ id: id }));
-      this.artPieces$.subscribe((a) => {
-        console.log(a);
-      });
+        this.store.dispatch(getArtPiecesForUser({ id: id }));
+        this.uStore.dispatch(getUserForProfile({ userId: id }));
+        this.cStore.dispatch(getChallengesForUser({ id: id }));
+      }
     });
 
     this.isArtPiecesClicked = true;

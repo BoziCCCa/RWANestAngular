@@ -17,10 +17,5 @@ export class AddchallengecommentComponent {
 
   handleFileChange(event: any) {
     this.myForm.value.photo = event.target.files[0];
-    if (this.myForm.value.photo) {
-      console.log(this.myForm.value);
-    }
   }
-
-
 }
